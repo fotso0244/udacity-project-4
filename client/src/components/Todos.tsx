@@ -32,11 +32,15 @@ interface TodosState {
 
 export class Todos extends React.PureComponent<TodosProps, TodosState> {
   
-  state: TodosState = {
+  constructor(props: TodosProps) {
+    super(props)
+    this.state =  {
       todos: [],
       newTodoName: '',
       loadingTodos: true
     }
+  }
+  //state: TodosState =
   
 
   handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -62,7 +66,7 @@ for (var i = 0; i < jsonData.todos.length; i++) {
     //console.log(counter.counter_name);
 }
 todosCopy[i] = newTodo*/
-setTimeout(() => { this.state.todos.push(newTodo) }, 10000)
+setTimeout(() => { this.state.todos.push(newTodo) }, 2000)
 for (var i = 0; i < this.state.todos.length; i++) {
   var elt2: Todo = this.state.todos[i]
     console.log(elt2.name);
@@ -109,15 +113,35 @@ for (var i = 0; i < this.state.todos.length; i++) {
 
   async componentDidMount() {
     try {
-      const todos = await getTodos(this.props.auth.getIdToken())
+      const todoslist = await getTodos(this.props.auth.getIdToken())
+      let todos = this.state.todos.slice()
+      for (var i = 0; i < todoslist.length; i++) {
+         todos.push(todoslist[i])    
+      }
       this.setState({
         todos: todos,
         loadingTodos: false
        })
+      
     } catch (e) {
       alert(`Failed to fetch todos: ${(e as Error).message}`)
     }
   }
+
+  /*async componentDidUpdate(prevProps: TodosProps, prevState: TodosState) {
+    
+    const todos = await getTodos(this.props.auth.getIdToken())
+    if (typeof this.state.todos == "undefined") {
+      this.setState({
+        todos,
+        loadingTodos: false
+       }, () => {console.log('todolist', todos)})
+       //console.log(this.state.todos);
+       
+      //  , () => {console.log('todolist', this.state.todos) })
+       
+      }
+  }*/
 
   render() {
     return (
