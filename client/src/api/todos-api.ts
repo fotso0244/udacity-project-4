@@ -9,10 +9,13 @@ export async function getTodos(idToken: string): Promise<Todo[]> {
   console.log('token: ', idToken)
   
   const response = await Axios.get(`/todos`, {
+    proxy: {
+      host: `${apiEndpoint}`
+    },
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${idToken}`
-    },
+    }
   })
   console.log('Todos:', response.data)
   return response.data
@@ -33,6 +36,9 @@ export async function createTodo(
   newTodo: CreateTodoRequest
 ): Promise<Todo> {
   const response = await Axios.post(`/todos`,  JSON.stringify(newTodo), {
+    proxy: {
+      host: `${apiEndpoint}`
+    },
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${idToken}`
@@ -57,6 +63,9 @@ export async function patchTodo(
   updatedTodo: UpdateTodoRequest
 ): Promise<void> {
   await Axios.patch(`/todos/${todoId}`, JSON.stringify(updatedTodo), {
+    proxy: {
+      host: `${apiEndpoint}`
+    },
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${idToken}`
@@ -78,6 +87,9 @@ export async function deleteTodo(
   todoId: string
 ): Promise<void> {
   await Axios.delete(`/todos/${todoId}`, {
+    proxy: {
+      host: `${apiEndpoint}`
+    },
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${idToken}`
@@ -97,6 +109,9 @@ export async function getUploadUrl(
   todoId: string
 ): Promise<string> {
   const response = await Axios.post(`/todos/${todoId}/attachment`, '', {
+    proxy: {
+      host: `${apiEndpoint}`
+    },
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${idToken}`
