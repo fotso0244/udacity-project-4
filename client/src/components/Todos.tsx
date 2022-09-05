@@ -1,5 +1,4 @@
 import dateFormat from 'dateformat'
-//import * as date from 'date-and-time'
 import { History } from 'history'
 import update from 'immutability-helper'
 import * as React from 'react'
@@ -32,11 +31,15 @@ interface TodosState {
 }
 
 export class Todos extends React.PureComponent<TodosProps, TodosState> {
-  state: TodosState = {
-    todos: [],
-    newTodoName: '',
-    loadingTodos: true
+  constructor(props: TodosProps) {
+    super(props)
+    this.state = {
+      todos: [],
+      newTodoName: '',
+      loadingTodos: true
+    }
   }
+  
 
   handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ newTodoName: event.target.value })
@@ -53,13 +56,23 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
         name: this.state.newTodoName,
         dueDate
       })
+      var todostring = `{"todos":${this.state.todos}}`
+      var todosCopy: Todo[] = []
+      var jsonData = JSON.parse(todostring);
+for (var i = 0; i < jsonData.todos.length; i++) {
+  var elt = jsonData.todos[i];
+  todosCopy[i] = elt
+    //console.log(counter.counter_name);
+}
+todosCopy[i] = newTodo
       this.setState({
-        todos: [...this.state.todos, newTodo],
+        //todos: [...this.state.todos, newTodo]
+        todos: todosCopy,
         newTodoName: ''
       })
-    } catch(e) {
+    } catch(error) {
       alert('Todo creation failed')
-      console.log(e)
+      console.log(error)
     }
   }
 
