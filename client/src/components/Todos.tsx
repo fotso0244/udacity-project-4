@@ -1,5 +1,4 @@
 import dateFormat from 'dateformat'
-//import * as date from 'date-and-time'
 import { History } from 'history'
 import update from 'immutability-helper'
 import * as React from 'react'
@@ -32,11 +31,13 @@ interface TodosState {
 }
 
 export class Todos extends React.PureComponent<TodosProps, TodosState> {
+  
   state: TodosState = {
-    todos: [],
-    newTodoName: '',
-    loadingTodos: true
-  }
+      todos: [],
+      newTodoName: '',
+      loadingTodos: true
+    }
+  
 
   handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ newTodoName: event.target.value })
@@ -51,15 +52,29 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
       const dueDate = this.calculateDueDate()
       const newTodo = await createTodo(this.props.auth.getIdToken(), {
         name: this.state.newTodoName,
-        dueDate
-      })
+        dueDate})
+     /* var todostring = `{"todos":"${this.state.todos}"}`
+      var todosCopy: Todo[] = []
+      var jsonData = JSON.parse(todostring);
+for (var i = 0; i < jsonData.todos.length; i++) {
+  var elt = jsonData.todos[i];
+  todosCopy[i] = elt
+    //console.log(counter.counter_name);
+}
+todosCopy[i] = newTodo*/
+setTimeout(() => { this.state.todos.push(newTodo) }, 10000)
+for (var i = 0; i < this.state.todos.length; i++) {
+  var elt2: Todo = this.state.todos[i]
+    console.log(elt2.name);
+}
       this.setState({
-        todos: [...this.state.todos, newTodo],
-        newTodoName: ''
+        //todos: [...this.state.todos, newTodo]
+        todos: this.state.todos,
+        newTodoName: this.state.newTodoName
       })
-    } catch(e) {
+    } catch(error) {
       alert('Todo creation failed')
-      console.log(e)
+      console.log(error)
     }
   }
 
@@ -96,9 +111,9 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
     try {
       const todos = await getTodos(this.props.auth.getIdToken())
       this.setState({
-        todos,
+        todos: todos,
         loadingTodos: false
-      })
+       })
     } catch (e) {
       alert(`Failed to fetch todos: ${(e as Error).message}`)
     }
