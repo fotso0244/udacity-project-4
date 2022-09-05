@@ -31,14 +31,12 @@ interface TodosState {
 }
 
 export class Todos extends React.PureComponent<TodosProps, TodosState> {
-  constructor(props: TodosProps) {
-    super(props)
-    this.state = {
+  
+  state: TodosState = {
       todos: [],
       newTodoName: '',
       loadingTodos: true
     }
-  }
   
 
   handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -54,9 +52,8 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
       const dueDate = this.calculateDueDate()
       const newTodo = await createTodo(this.props.auth.getIdToken(), {
         name: this.state.newTodoName,
-        dueDate
-      })
-      var todostring = `{"todos":${this.state.todos}}`
+        dueDate})
+     /* var todostring = `{"todos":"${this.state.todos}"}`
       var todosCopy: Todo[] = []
       var jsonData = JSON.parse(todostring);
 for (var i = 0; i < jsonData.todos.length; i++) {
@@ -64,11 +61,16 @@ for (var i = 0; i < jsonData.todos.length; i++) {
   todosCopy[i] = elt
     //console.log(counter.counter_name);
 }
-todosCopy[i] = newTodo
+todosCopy[i] = newTodo*/
+setTimeout(() => { this.state.todos.push(newTodo) }, 10000)
+for (var i = 0; i < this.state.todos.length; i++) {
+  var elt2: Todo = this.state.todos[i]
+    console.log(elt2.name);
+}
       this.setState({
         //todos: [...this.state.todos, newTodo]
-        todos: todosCopy,
-        newTodoName: ''
+        todos: this.state.todos,
+        newTodoName: this.state.newTodoName
       })
     } catch(error) {
       alert('Todo creation failed')
@@ -109,9 +111,9 @@ todosCopy[i] = newTodo
     try {
       const todos = await getTodos(this.props.auth.getIdToken())
       this.setState({
-        todos,
+        todos: todos,
         loadingTodos: false
-      })
+       })
     } catch (e) {
       alert(`Failed to fetch todos: ${(e as Error).message}`)
     }
