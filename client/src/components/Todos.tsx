@@ -56,6 +56,7 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
       const newTodo = await createTodo(this.props.auth.getIdToken(), {
         name: this.state.newTodoName,
         dueDate})
+        console.log('newTodo', newTodo)
      /* var todostring = `{"todos":"${this.state.todos}"}`
       var todosCopy: Todo[] = []
       var jsonData = JSON.parse(todostring);
@@ -65,12 +66,14 @@ for (var i = 0; i < jsonData.todos.length; i++) {
     //console.log(counter.counter_name);
 }
 todosCopy[i] = newTodo*/
+
 setTimeout(() => { this.state.todos.push(newTodo) }, 2000)
 
       this.setState({
         //todos: [...this.state.todos, newTodo]
         todos: this.state.todos,
-        newTodoName: this.state.newTodoName
+        newTodoName: this.state.newTodoName,
+        
       })
     } catch(error) {
       alert('Todo creation failed')
@@ -110,14 +113,22 @@ setTimeout(() => { this.state.todos.push(newTodo) }, 2000)
   async componentDidMount() {
     try {
       const todoslist = await getTodos(this.props.auth.getIdToken())
-      let todos = this.state.todos.slice()
+      const todosString = JSON.stringify(todoslist)
+      var todos: Todo[] = []
+      var jsonData = JSON.parse(todosString);
+for (var i = 0; i < jsonData.todos.length; i++) {
+  var elt = jsonData.todos[i];
+  todos.push(elt)
+  //todosCopy[i] = elt
+}
+      /*let todos = this.state.todos.slice()
       for (var i = 0; i < todoslist.length; i++) {
          todos.push(todoslist[i])    
-      }
+      }*/
       this.setState({
         todos: todos,
         loadingTodos: false
-       })
+       },() => {console.log('todoslist', this.state.todos)})
       
     } catch (e) {
       alert(`Failed to fetch todos: ${(e as Error).message}`)
@@ -127,11 +138,16 @@ setTimeout(() => { this.state.todos.push(newTodo) }, 2000)
   /*async componentDidUpdate(prevProps: TodosProps, prevState: TodosState) {
     
     const todos = await getTodos(this.props.auth.getIdToken())
-    if (typeof this.state.todos == "undefined") {
+    if (this.state.todos.length === 0) {
+      const todoslist = await getTodos(this.props.auth.getIdToken())
+      let todos = this.state.todos.slice()
+      for (var i = 0; i < todoslist.length; i++) {
+         todos.push(todoslist[i])    
+      }
       this.setState({
         todos,
         loadingTodos: false
-       }, () => {console.log('todolist', todos)})
+       }, () => {console.log('todolist2', this.state.todos)})
        //console.log(this.state.todos);
        
       //  , () => {console.log('todolist', this.state.todos) })
@@ -147,6 +163,7 @@ setTimeout(() => { this.state.todos.push(newTodo) }, 2000)
         {this.renderCreateTodoInput()}
 
         {this.renderTodos()}
+        
       </div>
     )
   }

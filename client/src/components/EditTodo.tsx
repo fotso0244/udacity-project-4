@@ -43,6 +43,15 @@ export class EditTodo extends React.PureComponent<
 
   handleSubmit = async (event: React.SyntheticEvent) => {
     event.preventDefault()
+    
+    var todoId: string = ''
+const location = window.location.href
+console.log('location', location)
+if (/todo/.test(location) && /edit/.test(location)) {
+  todoId = location.substr(28, 36)
+}
+console.log('todoId for edit', todoId)
+const match = { params: { todoId: todoId}}
 
     try {
       if (!this.state.file) {
@@ -51,10 +60,10 @@ export class EditTodo extends React.PureComponent<
       }
 
       this.setUploadState(UploadState.FetchingPresignedUrl)
-      const uploadUrl = await getUploadUrl(String(this.props.auth.getIdToken()), this.props.match.params.todoId)
-
+      const uploadUrl = await getUploadUrl(String(this.props.auth.getIdToken()), match.params.todoId)
+       const uploadUrlString = JSON.stringify(uploadUrl)
       this.setUploadState(UploadState.UploadingFile)
-      await uploadFile(uploadUrl, this.state.file)
+      await uploadFile(JSON.parse(uploadUrlString).uploadUrl, this.state.file)
 
       alert('File was uploaded!')
     } catch (e) {

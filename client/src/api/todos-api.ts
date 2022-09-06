@@ -17,7 +17,7 @@ export async function getTodos(idToken: string): Promise<Todo[]> {
   })
   console.log('Todos:', response.data)
   return response.data
-  /*const response = await fetch(`${apiEndpoint}/todos`, {
+ /*const response = await fetch(`${apiEndpoint}/todos`, {
                      method: 'get',
                      headers: {
                       'Content-Type': 'application/json',
@@ -106,7 +106,7 @@ export async function getUploadUrl(
       'Authorization': `Bearer ${idToken}`
     }
   })
-  return response.data.uploadUrl
+  return response.data
   /*const reply = await fetch(`${apiEndpoint}/todos/${todoId}/attachment`, {
     method: 'POST',
     headers: {

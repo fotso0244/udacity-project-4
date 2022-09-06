@@ -8,9 +8,15 @@ import { CustomRouter } from './router/customRouter'
 import ReactDOMServer from 'react-dom/server'
 import App from './App';
 const history = createBrowserHistory()
-
+var todoId: string = ''
 const auth = new Auth(history)
-
+const location = window.location.href
+console.log('location', location)
+if (/todo/.test(location) && /edit/.test(location)) {
+  todoId = location.substr(28, 36)
+}
+console.log('todoId for edit', todoId)
+const match = { params: { todoId: todoId}}
 /*const handleAuthentication = (props: any) => {
   const location = props.location
   if (/access_token|id_token|error/.test(location.hash)) {
@@ -36,7 +42,7 @@ export function makeAuthRouting() {
         />
         <Route
           path="*"
-          element={<App auth={auth} history={history}/>}
+          element={<App auth={auth} history={history} match={match}/>}
           /*render={props => {
             return <App auth={auth} {...props} />
           }}*/
