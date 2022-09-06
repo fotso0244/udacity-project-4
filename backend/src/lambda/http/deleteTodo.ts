@@ -3,7 +3,7 @@ import 'source-map-support/register'
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda'
 import middy from '@middy/core'
 import { httpErrorHandler } from 'middy/middlewares'
-import  cors  from '@middy/http-cors'
+//import  cors  from '@middy/http-cors'
 
 import { deleteTodo } from '../../businessLogic/todos'
 import { getUserId } from '../utils'
@@ -18,9 +18,7 @@ export const handler = middy(
     if (!validOwner) {
       return {
           statusCode: 404,
-          headers: {
-              'Access-Control-Allow-Origin': '*'
-          },
+          
           body: JSON.stringify({
               error: `UserId ${userId} is not owner for todo item with Id ${todoId}`
           })
@@ -30,7 +28,11 @@ export const handler = middy(
     await deleteTodo(todoId, userId)
     const response = {
       statusCode: 200,
-      
+      headers: {
+        "Access-Control-Allow-Headers" : "Content-Type",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
+    },
       body: JSON.stringify({
           
       }),
@@ -41,8 +43,8 @@ export const handler = middy(
 
 handler
   .use(httpErrorHandler())
-  .use(
+  /*.use(
     cors({
       credentials: true
     })
-  )
+  )*/

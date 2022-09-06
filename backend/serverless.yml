@@ -42,7 +42,7 @@ provider:
   environment:
     TODOS_TABLE: Todos-${self:provider.stage}
     TODOS_CREATED_AT_INDEX: CreatedAtIndex
-    ATTACHMENT_S3_BUCKET: serverless-c3-todo-images-${self:provider.stage}
+    ATTACHMENT_S3_BUCKET: serverless-c5-todo-images-${self:provider.stage}
     SIGNED_URL_EXPIRATION: 300
     AUTH_0_CERT_ID: Auth0Cert-Project-${self:provider.stage}
   
@@ -52,7 +52,7 @@ custom:
   documentation:
     api:
       info:
-        version: 1.1.6
+        version: 1.2.0
         title: Udagram-Project-API
         description: Serverless application project for image sharing
       

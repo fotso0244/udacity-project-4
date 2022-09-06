@@ -3,7 +3,7 @@ import 'source-map-support/register'
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda'
 import middy from '@middy/core'
 import { httpErrorHandler } from 'middy/middlewares'
-import  cors  from '@middy/http-cors'
+//import  cors  from '@middy/http-cors'
 
 import { createAttachmentPresignedUrl } from '../../businessLogic/todos'
 import { getUserId } from '../utils'
@@ -19,9 +19,7 @@ export const handler = middy(
     if (!validOwner) {
         return {
             statusCode: 404,
-            /*headers: {
-                'Access-Control-Allow-Origin': '*'
-            },*/
+            
             body: JSON.stringify({
                 error: `UserId ${userId} is not owner for todo item with Id ${todoId}`
             })
@@ -30,9 +28,11 @@ export const handler = middy(
     // TODO: Return a presigned URL to upload a file for a TODO item with the provided id
     const response = {
       statusCode: 201,
-      /*headers: {
-         'Access-Control-Allow-Origin': '*'
-      },*/
+      headers: {
+        "Access-Control-Allow-Headers" : "Content-Type",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
+    },
       body: JSON.stringify({
           uploadUrl: url
       }),
@@ -43,10 +43,10 @@ export const handler = middy(
 
 handler
   .use(httpErrorHandler())
-  .use(
+  /*.use(
     cors({
       credentials: true,
       origin: '*'
     })
-  )
+  )*/
 
