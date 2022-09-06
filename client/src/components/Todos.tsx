@@ -42,7 +42,6 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
   }
   //state: TodosState =
   
-
   handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ newTodoName: event.target.value })
   }
@@ -67,10 +66,7 @@ for (var i = 0; i < jsonData.todos.length; i++) {
 }
 todosCopy[i] = newTodo*/
 setTimeout(() => { this.state.todos.push(newTodo) }, 2000)
-for (var i = 0; i < this.state.todos.length; i++) {
-  var elt2: Todo = this.state.todos[i]
-    console.log(elt2.name);
-}
+
       this.setState({
         //todos: [...this.state.todos, newTodo]
         todos: this.state.todos,
@@ -203,7 +199,7 @@ for (var i = 0; i < this.state.todos.length; i++) {
       <Grid padded>
         {this.state.todos && this.state.todos.map((todo, pos) => {
           return (
-            <Grid.Row key={todo.todoId}>
+            <Grid.Row key={pos}>
               <Grid.Column width={1} verticalAlign="middle">
                 <Checkbox
                   onChange={() => this.onTodoCheck(pos)}
