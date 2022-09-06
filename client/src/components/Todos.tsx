@@ -66,8 +66,9 @@ for (var i = 0; i < jsonData.todos.length; i++) {
     //console.log(counter.counter_name);
 }
 todosCopy[i] = newTodo*/
-
-setTimeout(() => { this.state.todos.push(newTodo) }, 2000)
+const newTodoStr = JSON.stringify(newTodo)
+const todo = JSON.parse(newTodoStr)
+setTimeout(() => { this.state.todos.push(todo.newItem) }, 2000)
 
       this.setState({
         //todos: [...this.state.todos, newTodo]
