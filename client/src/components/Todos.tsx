@@ -76,6 +76,7 @@ setTimeout(() => { this.state.todos.push(todo.newItem) }, 2000)
         newTodoName: this.state.newTodoName,
         
       })
+      this.forceUpdate()
     } catch(error) {
       alert('Todo creation failed')
       console.log(error)
